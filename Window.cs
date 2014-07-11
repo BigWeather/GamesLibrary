@@ -16,10 +16,6 @@ namespace GamesLibrary
 
         public Graphic background { get; set; }
         public Style style { get; set; }
-
-#if OLD_TEXTURE
-        public Texture2D texture { get; set; } // TODO: I'm not really fond of this, at all...
-#endif
     }
 
     public class WindowDecorations
@@ -32,10 +28,6 @@ namespace GamesLibrary
         public Graphic sideE { get; set; }
         public Graphic sideS { get; set; }
         public Graphic sideW { get; set; }
-
-#if OLD_TEXTURE
-        public Texture2D texture { get; set; } // TODO: I'm not really fond of this, at all...
-#endif
     }
 
     public class WindowEffect
@@ -44,10 +36,6 @@ namespace GamesLibrary
         public int msDuration { get; set; }
         public Vector2 v2Start { get; set; }
         public Vector2 v2End { get; set; }
-
-#if OLD_TEXTURE
-        public Texture2D texture { get; set; } // TODO: I'm not really fond of this, at all...
-#endif
 
         private bool _started
         {
@@ -345,11 +333,7 @@ namespace GamesLibrary
         
         public static void drawBackground(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, WindowBackground windowBackground, Rectangle bounds, Matrix windowToScreenTransform)
         {
-#if OLD_TEXTURE
-            if ((windowBackground == null) || (windowBackground.texture == null) || (windowBackground.background == null))
-#else
             if ((windowBackground == null) || (windowBackground.background == null))
-#endif
                 return;
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, Window.rasterizerState, null, windowToScreenTransform);
@@ -362,31 +346,19 @@ namespace GamesLibrary
             {
                 case WindowBackground.Style.Centered:
                     {
-#if OLD_TEXTURE
-                        spriteBatch.Draw(windowBackground.texture, new Rectangle((boundsClipped.Width / 2) - (fBackground.bounds.Width / 2), (boundsClipped.Height / 2) - (fBackground.bounds.Height / 2), fBackground.bounds.Width, fBackground.bounds.Height), fBackground.bounds, Color.White);
-#else
                         windowBackground.background.Draw(gameTime, gameState, spriteBatch, new Rectangle((boundsClipped.Width / 2) - (fBackground.bounds.Width / 2), (boundsClipped.Height / 2) - (fBackground.bounds.Height / 2), fBackground.bounds.Width, fBackground.bounds.Height));
-#endif
                         break;
                     }
                 case WindowBackground.Style.Stretched:
                     {
-#if OLD_TEXTURE
-                        spriteBatch.Draw(windowBackground.texture, new Rectangle(0, 0, boundsClipped.Width, boundsClipped.Height), fBackground.bounds, Color.White);
-#else
                         windowBackground.background.Draw(gameTime, gameState, spriteBatch, new Rectangle(0, 0, boundsClipped.Width, boundsClipped.Height));
-#endif
                         break;
                     }
                 case WindowBackground.Style.Tiled:
                     {
                         for (int x = 0; x < boundsClipped.Width; x += fBackground.bounds.Width)
                             for (int y = 0; y < boundsClipped.Height; y += fBackground.bounds.Height)
-#if OLD_TEXTURE
-                                spriteBatch.Draw(windowBackground.texture, new Rectangle(x, y, fBackground.bounds.Width, fBackground.bounds.Height), fBackground.bounds, Color.White);
-#else
                                 windowBackground.background.Draw(gameTime, gameState, spriteBatch, new Point(x, y));
-#endif
                         break;
                     }
                 default:
@@ -398,58 +370,33 @@ namespace GamesLibrary
 
         public static void drawDecorations(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, WindowDecorations windowDecorations, Rectangle bounds, Matrix windowToScreenTransform)
         {
-#if OLD_TEXTURE
-            if ((windowDecorations == null) || (windowDecorations.texture == null))
-                return;
-#else
             if (windowDecorations == null)
                 return;
-#endif
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, null, null, Window.rasterizerState, null, windowToScreenTransform);
-
-#if OLD_TEXTURE
-            Texture2D texture = windowDecorations.texture;
-#endif
 
             if (windowDecorations.cornerNW != null)
             {
                 Frame fCornerNW = windowDecorations.cornerNW.getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-                spriteBatch.Draw(texture, new Rectangle(0, 0, fCornerNW.bounds.Width, fCornerNW.bounds.Height), fCornerNW.bounds, Color.White);
-#else
                 windowDecorations.cornerNW.Draw(gameTime, gameState, spriteBatch, new Point(0, 0));
-#endif
             }
 
             if (windowDecorations.cornerNE != null)
             {
                 Frame fCornerNE = windowDecorations.cornerNE.getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-                spriteBatch.Draw(texture, new Rectangle(bounds.Width - fCornerNE.bounds.Width, 0, fCornerNE.bounds.Width, fCornerNE.bounds.Height), fCornerNE.bounds, Color.White);
-#else
                 windowDecorations.cornerNE.Draw(gameTime, gameState, spriteBatch, new Point(bounds.Width - fCornerNE.bounds.Width, 0));
-#endif
             }
 
             if (windowDecorations.cornerSE != null)
             {
                 Frame fCornerSE = windowDecorations.cornerSE.getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-                spriteBatch.Draw(texture, new Rectangle(bounds.Width - fCornerSE.bounds.Width, bounds.Height - fCornerSE.bounds.Height, fCornerSE.bounds.Width, fCornerSE.bounds.Height), fCornerSE.bounds, Color.White);
-#else
                 windowDecorations.cornerSE.Draw(gameTime, gameState, spriteBatch, new Point(bounds.Width - fCornerSE.bounds.Width, bounds.Height - fCornerSE.bounds.Height));
-#endif
             }
 
             if (windowDecorations.cornerSW != null)
             {
                 Frame fCornerSW = windowDecorations.cornerSW.getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-                spriteBatch.Draw(texture, new Rectangle(0, bounds.Height - fCornerSW.bounds.Height, fCornerSW.bounds.Width, fCornerSW.bounds.Height), fCornerSW.bounds, Color.White);
-#else
                 windowDecorations.cornerSW.Draw(gameTime, gameState, spriteBatch, new Point(0, bounds.Height - fCornerSW.bounds.Height));
-#endif
             }
 
             if (windowDecorations.sideN != null)
@@ -466,11 +413,7 @@ namespace GamesLibrary
 
                 // TODO: Go until (endX - fSideN.bounds.Width) and then do a partial for the remainder, eventually?
                 for (int x = startX; x < endX; x += fSideN.bounds.Width)
-#if OLD_TEXTURE
-                    spriteBatch.Draw(texture, new Rectangle(x, 0, fSideN.bounds.Width, fSideN.bounds.Height), fSideN.bounds, Color.White);
-#else
                     windowDecorations.sideN.Draw(gameTime, gameState, spriteBatch, new Point(x, 0));
-#endif
             }
 
             if (windowDecorations.sideE != null)
@@ -487,11 +430,7 @@ namespace GamesLibrary
 
                 // TODO: Go until (endY - fSideE.bounds.Height) and then do a partial for the remainder, eventually?
                 for (int y = startY; y < endY; y += fSideE.bounds.Height)
-#if OLD_TEXTURE
-                    spriteBatch.Draw(texture, new Rectangle(bounds.Width - fSideE.bounds.Width, y, fSideE.bounds.Width, fSideE.bounds.Height), fSideE.bounds, Color.White);
-#else
                     windowDecorations.sideE.Draw(gameTime, gameState, spriteBatch, new Point(bounds.Width - fSideE.bounds.Width, y));
-#endif
             }
 
             if (windowDecorations.sideS != null)
@@ -508,11 +447,7 @@ namespace GamesLibrary
 
                 // TODO: Go until (endX - fSideS.bounds.Width) and then do a partial for the remainder, eventually?
                 for (int x = startX; x < endX; x += fSideS.bounds.Width)
-#if OLD_TEXTURE
-                    spriteBatch.Draw(texture, new Rectangle(x, bounds.Height - fSideS.bounds.Height, fSideS.bounds.Width, fSideS.bounds.Height), fSideS.bounds, Color.White);
-#else
                     windowDecorations.sideS.Draw(gameTime, gameState, spriteBatch, new Point(x, bounds.Height - fSideS.bounds.Height));
-#endif
             }
 
             if (windowDecorations.sideW != null)
@@ -529,11 +464,7 @@ namespace GamesLibrary
 
                 // TODO: Go until (endY - fSideW.bounds.Height) and then do a partial for the remainder, eventually?
                 for (int y = startY; y < endY; y += fSideW.bounds.Height)
-#if OLD_TEXTURE
-                    spriteBatch.Draw(texture, new Rectangle(0, y, fSideW.bounds.Width, fSideW.bounds.Height), fSideW.bounds, Color.White);
-#else
                     windowDecorations.sideW.Draw(gameTime, gameState, spriteBatch, new Point(0, y));
-#endif
             }
 
             spriteBatch.End();
@@ -559,22 +490,11 @@ namespace GamesLibrary
                 if (effect.graphic == null)
                     continue;
 
-#if OLD_TEXTURE
-                if (effect.texture == null)
-                    continue;
-
-                Texture2D texture = effect.texture;
-#endif
-
                 Frame fEffect = effect.graphic.getCurrentFrame(gameTime, gameState);
 
                 Vector2 v2pos = Vector2.Lerp(effect.v2Start, effect.v2End, (float)elapsed / (float)effect.msDuration);
 
-#if OLD_TEXTURE
-                spriteBatch.Draw(texture, new Rectangle((int)v2pos.X, (int)v2pos.Y, fEffect.bounds.Width, fEffect.bounds.Height), fEffect.bounds, Color.White);
-#else
                 effect.graphic.Draw(gameTime, gameState, spriteBatch, new Point((int)v2pos.X, (int)v2pos.Y));
-#endif
             }
 
             foreach (WindowEffect effect in cleanup)

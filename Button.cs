@@ -169,11 +169,7 @@ namespace GamesLibrary
                 Frame frame = _graphic.getCurrentFrame(gameTime, gameState);
                 // NOTE: We don't do anchor here because Button is Hotspot and we need to be sure that _bounds is correct coming in, period.
                 //spriteBatch.Draw(baseGame.getTexture(_graphic), _bounds, frame.bounds, this.color, 0.0f, new Vector2(frame.anchor.X, frame.anchor.Y), spriteEffects, layerDepth);
-#if OLD_TEXTURE
-                spriteBatch.Draw(baseGame.getTexture(_graphic), _bounds, frame.bounds, this.color, 0.0f, Vector2.Zero, spriteEffects, layerDepth);
-#else
                 _graphic.Draw(gameTime, gameState, spriteBatch, _bounds, this.color, 0.0f, Vector2.Zero, layerDepth);
-#endif
             }
 
             if ((_font != null) && (_text != null))

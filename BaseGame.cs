@@ -19,13 +19,7 @@ namespace GamesLibrary
 
         private Stack<Window> _windowStack = new Stack<Window>();
         public Vector2 mousePos = new Vector2(0, 0);
-#if OLD_TEXTURE
-        protected Dictionary<string, Texture2D> dictTextures = new Dictionary<string, Texture2D>();
-#endif
         public Dictionary<string, Graphic> dictGraphics = new Dictionary<string,Graphic>();
-#if OLD_TEXTURE
-        public Texture2D tx2dSmallSquare;
-#endif
         public SpriteFont miramonte;
         public Rectangle rectTileSafeArea;
         public VariableBundle gameState = new VariableBundle();
@@ -68,19 +62,10 @@ namespace GamesLibrary
         public void LoadContentEx()
         {
             // Load textures
-#if OLD_TEXTURE
-            tx2dSmallSquare = Content.Load<Texture2D>(@"SmallSquare");
-#else
             this.loadTexture("SmallSquare", @"SmallSquare");
-#endif
 
             // Load fonts
             miramonte = Content.Load<SpriteFont>(@"Miramonte");
-
-#if OLD_TEXTURE
-            // Store textures in a dictionary
-            dictTextures.Add("SmallSquare", tx2dSmallSquare);
-#endif
 
             LoadContent();
 
@@ -149,12 +134,8 @@ namespace GamesLibrary
             if (mousePointer != null)
             {
                 spriteBatch.Begin();
-                Frame mousePointerFrame = mousePointer.getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-                spriteBatch.Draw(getTexture(mousePointer), new Rectangle((int)this.mousePos.X, (int)this.mousePos.Y, mousePointerFrame.bounds.Width, mousePointerFrame.bounds.Height), mousePointerFrame.bounds, Color.White);
-#else
+                //Frame mousePointerFrame = mousePointer.getCurrentFrame(gameTime, gameState);
                 mousePointer.Draw(gameTime, gameState, spriteBatch, new Point((int)this.mousePos.X, (int)this.mousePos.Y));
-#endif
                 spriteBatch.End();
             }
 #endif
@@ -182,27 +163,6 @@ namespace GamesLibrary
 
             _windowStack.Pop();
         }
-
-#if OLD_TEXTURE
-        public Texture2D getTexture(Graphic graphic)
-        {
-            return this.dictTextures[graphic.texture];
-        }
-#endif
-
-#if OLD_TEXTURE
-        public void loadTexture(string identifier, string assetName)
-        {
-            Texture2D tx2d = this.Content.Load<Texture2D>(@assetName);
-
-#if OLD_TEXTURE
-            // Store textures in a dictionary
-            this.dictTextures.Add(identifier, tx2d);
-#endif
-
-            TextureManager.Instance.setTexture(identifier, tx2d);
-        }
-#endif
 
         public void addGraphic(Graphic graphic)
         {

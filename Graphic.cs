@@ -115,23 +115,19 @@ namespace GamesLibrary
             return this.animations[0].getCurrentFrame(gameTime);
         }
 
-#if OLD_TEXTURE
-        public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, BaseGame baseGame, Rectangle destinationRectangle)
-#else
-        public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, Rectangle destinationRectangle)
-#endif
+        public void Draw(Frame frame, SpriteBatch spriteBatch, Rectangle destinationRectangle)
         {
-#if false
-            Frame frame = getCurrentFrame(gameTime, gameState);
-#if OLD_TEXTURE
-            Texture2D texture = baseGame.getTexture(this);
-            spriteBatch.Draw(texture, destinationRectangle, frame.bounds, Color.White);
-#else
-            spriteBatch.DrawEx(this.texture, destinationRectangle, frame.bounds, Color.White);
-#endif
-#else
+            Draw(frame, spriteBatch, destinationRectangle, Color.White);
+        }
+
+        public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, Rectangle destinationRectangle)
+        {
             Draw(gameTime, gameState, spriteBatch, destinationRectangle, Color.White);
-#endif
+        }
+
+        public void Draw(Frame frame, SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
+        {
+            spriteBatch.DrawEx(this.texture, destinationRectangle, frame.bounds, color);
         }
 
         public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
@@ -140,10 +136,20 @@ namespace GamesLibrary
             spriteBatch.DrawEx(this.texture, destinationRectangle, frame.bounds, color);
         }
 
+        public void Draw(Frame frame, SpriteBatch spriteBatch, Point destinationPoint)
+        {
+            spriteBatch.DrawEx(this.texture, new Rectangle(destinationPoint.X, destinationPoint.Y, frame.bounds.Width, frame.bounds.Height), frame.bounds, Color.White);
+        }
+
         public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, Point destinationPoint)
         {
             Frame frame = getCurrentFrame(gameTime, gameState);
             spriteBatch.DrawEx(this.texture, new Rectangle(destinationPoint.X, destinationPoint.Y, frame.bounds.Width, frame.bounds.Height), frame.bounds, Color.White);
+        }
+
+        public void Draw(Frame frame, SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, float layerDepth)
+        {
+            spriteBatch.DrawEx(this.texture, destinationRectangle, frame.bounds, color, rotation, origin, SpriteEffects.None, layerDepth);
         }
 
         public void Draw(GameTime gameTime, VariableBundle gameState, SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color, float rotation, Vector2 origin, float layerDepth)
