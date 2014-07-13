@@ -26,6 +26,39 @@ namespace GamesLibrary
     //    }
     //}
 
+    public class FontManager
+    {
+        public static FontManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new FontManager();
+
+                return _instance;
+            }
+        }
+        private static FontManager _instance = null;
+
+        Dictionary<string, object> _fontByName = new Dictionary<string, object>();
+
+        public object getFont(string name)
+        {
+            object font;
+            if (!_fontByName.TryGetValue(name, out font))
+                return null;
+            return font;
+        }
+
+        public void setFont(string name, object font)
+        {
+            if (!_fontByName.ContainsKey(name))
+                _fontByName.Add(name, font);
+            else
+                _fontByName[name] = font;
+        }
+    }
+
     public class TextureManager
     {
         public static TextureManager Instance

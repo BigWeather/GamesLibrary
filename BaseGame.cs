@@ -20,7 +20,7 @@ namespace GamesLibrary
         private Stack<Window> _windowStack = new Stack<Window>();
         public Vector2 mousePos = new Vector2(0, 0);
         public Dictionary<string, Graphic> dictGraphics = new Dictionary<string,Graphic>();
-        public SpriteFont miramonte;
+        public string fontName = "Roboto";
         public Rectangle rectTileSafeArea;
         public VariableBundle gameState = new VariableBundle();
 
@@ -65,7 +65,8 @@ namespace GamesLibrary
             this.loadTexture("SmallSquare", @"SmallSquare");
 
             // Load fonts
-            miramonte = Content.Load<SpriteFont>(@"Miramonte");
+            this.loadFont("Miramonte", @"Miramonte");
+            this.loadFont("Roboto", @"Roboto");
 
             LoadContent();
 

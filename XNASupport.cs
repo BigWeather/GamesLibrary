@@ -29,5 +29,11 @@ namespace GamesLibrary
             Texture2D tx2d = baseGame.Content.Load<Texture2D>(@assetName);
             TextureManager.Instance.setTexture(identifier, tx2d);
         }
+
+        public static void loadFont(this BaseGame baseGame, string identifier, string assetName)
+        {
+            SpriteFont spriteFont = baseGame.Content.Load<SpriteFont>(@assetName);
+            FontManager.Instance.setFont(identifier, spriteFont);
+        }
     }
 }
