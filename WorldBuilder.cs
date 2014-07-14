@@ -132,8 +132,8 @@ namespace GamesLibrary
             float[,] heightMap = new float[_height, _width];
 
             //seed = new System.Random().Next(100);
-            //seed = new System.Random().Next(int.MaxValue - 100); // TODO: This is the correct line.
-            seed = 27;
+            seed = new System.Random().Next(int.MaxValue - 100); // TODO:AA: This is the correct line.
+            //seed = 27;
 
 
 
