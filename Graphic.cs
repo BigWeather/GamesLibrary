@@ -135,6 +135,7 @@ namespace GamesLibrary
                 return null;
 
             // Get the appropriate animation based on the conditions.
+            // TODO: Consider a scoring system, one with most matches wins?
             foreach (Animation animation in this.animations)
             {
                 if (!animation.isValid(gameState))
